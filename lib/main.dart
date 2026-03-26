@@ -174,7 +174,7 @@ class InstructionsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             _buildInstructionCard(
-              icon: Icons.target,
+              icon: Icons.flag,
               title: "Seu Objetivo",
               description:
                   "Ganhe o máximo de pontos possível durante o experimento.\n\nVocê pode escolher qualquer estratégia!",
@@ -220,9 +220,11 @@ class InstructionsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.blue[50],
         borderRadius: BorderRadius.circular(8),
-        border: Border.left(
-          color: Colors.blue,
-          width: 4,
+        border: Border(
+          left: BorderSide(
+            color: Colors.blue,
+            width: 4,
+          ),
         ),
       ),
       child: Row(
