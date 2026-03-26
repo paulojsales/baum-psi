@@ -18,13 +18,252 @@ class PsychologyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
-      home: const ExperimentScreen(),
+      home: const ModeSelectionScreen(),
+    );
+  }
+}
+
+// TELA DE SELEÇÃO DE MODO
+class ModeSelectionScreen extends StatelessWidget {
+  const ModeSelectionScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text("Seleção de Modo"),
+        elevation: 0,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Selecione o Modo do Experimento",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 60),
+            _buildModeButton(
+              context,
+              label: "Modo Teste",
+              description: "Para pesquisadores\n(Mostra painel de debug)",
+              color: Colors.orange,
+              isTestMode: true,
+            ),
+            const SizedBox(height: 40),
+            _buildModeButton(
+              context,
+              label: "Modo Efetivo",
+              description: "Aplicação efetiva\n(Sem informações debug)",
+              color: Colors.green,
+              isTestMode: false,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildModeButton(
+    BuildContext context, {
+    required String label,
+    required String description,
+    required Color color,
+    required bool isTestMode,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => InstructionsScreen(isTestMode: isTestMode),
+          ),
+        );
+      },
+      child: Container(
+        width: 280,
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: Column(
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              description,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// TELA DE INSTRUÇÕES
+class InstructionsScreen extends StatelessWidget {
+  final bool isTestMode;
+
+  const InstructionsScreen({super.key, required this.isTestMode});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text("Instruções do Experimento"),
+        elevation: 0,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Como Ganhar Pontos",
+              style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(height: 24),
+            _buildInstructionCard(
+              icon: Icons.touch_app,
+              title: "Pressione os Botões",
+              description:
+                  "Existem dois botões na tela: BOTÃO 1 e BOTÃO 2.\n\nPressione qualquer um deles para ganhar pontos.",
+            ),
+            const SizedBox(height: 16),
+            _buildInstructionCard(
+              icon: Icons.star,
+              title: "Ganhe Pontos",
+              description:
+                  "Cada vez que você pressiona um botão, você acumula cliques.\n\nAo atingir um número específico de cliques, você ganha 1 ponto!",
+            ),
+            const SizedBox(height: 16),
+            _buildInstructionCard(
+              icon: Icons.timer,
+              title: "Duração do Experimento",
+              description:
+                  "O experimento dura 20 minutos no total.\n\nEle é dividido em 2 fases de 10 minutos cada.",
+            ),
+            const SizedBox(height: 16),
+            _buildInstructionCard(
+              icon: Icons.target,
+              title: "Seu Objetivo",
+              description:
+                  "Ganhe o máximo de pontos possível durante o experimento.\n\nVocê pode escolher qualquer estratégia!",
+            ),
+            const SizedBox(height: 40),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          ExperimentScreen(isTestMode: isTestMode),
+                    ),
+                  );
+                },
+                child: const Text(
+                  "Iniciar Experimento",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInstructionCard({
+    required IconData icon,
+    required String title,
+    required String description,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.blue[50],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.left(
+          color: Colors.blue,
+          width: 4,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: Colors.blue, size: 28),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  description,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.black87,
+                    height: 1.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
 
 class ExperimentScreen extends StatefulWidget {
-  const ExperimentScreen({super.key});
+  final bool isTestMode;
+
+  const ExperimentScreen({super.key, this.isTestMode = false});
 
   @override
   State<ExperimentScreen> createState() => _ExperimentScreenState();
@@ -156,29 +395,31 @@ class _ExperimentScreenState extends State<ExperimentScreen> {
                 _buildExperimentalButton("BOTÃO 2", () => _handlePress('B')),
               ],
             ),
-            // Monitor de monitoramento (Remover na versão final para o participante)
-            const SizedBox(height: 100),
-            Container(
-              padding: const EdgeInsets.all(16),
-              color: Colors.grey[100],
-              child: Column(
-                children: [
-                  const Text(
-                    "PAINEL DO PESQUISADOR (DEBUG)",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    "Tempo Restante: ${remaining.inMinutes}:${(remaining.inSeconds % 60).toString().padLeft(2, '0')}",
-                  ),
-                  Text(
-                    "Fase Atual: ${isPhaseTwo ? '2 (A:VR20, B:VR10)' : '1 (A:VR10, B:VR20)'}",
-                  ),
-                  Text(
-                    "Alvos Atuais: A=$targetA ($currentClicksA), B=$targetB ($currentClicksB)",
-                  ),
-                ],
+            // Monitor de monitoramento (Apenas em Modo Teste)
+            if (widget.isTestMode) ...[
+              const SizedBox(height: 100),
+              Container(
+                padding: const EdgeInsets.all(16),
+                color: Colors.grey[100],
+                child: Column(
+                  children: [
+                    const Text(
+                      "PAINEL DO PESQUISADOR (DEBUG)",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      "Tempo Restante: ${remaining.inMinutes}:${(remaining.inSeconds % 60).toString().padLeft(2, '0')}",
+                    ),
+                    Text(
+                      "Fase Atual: ${isPhaseTwo ? '2 (A:VR20, B:VR10)' : '1 (A:VR10, B:VR20)'}",
+                    ),
+                    Text(
+                      "Alvos Atuais: A=$targetA ($currentClicksA), B=$targetB ($currentClicksB)",
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ]
           ],
         ),
       ),
