@@ -1,6 +1,6 @@
 {
-    "name": "flutter_web_project",
-    "short_name": "flutter_web_project",
+    "name": "baum-psi",
+    "short_name": "baum-psi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
